@@ -1,6 +1,7 @@
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from models.classical import train_classical_model
+from models.classical import evaluate_on_test
 
 def get_cifar10_loaders(batch_size=64, validation_split=0.2):
     transform = transforms.Compose([
@@ -32,3 +33,5 @@ if __name__ == '__main__':
     train_laoder, val_loader, test_loader = get_cifar10_loaders(batch_size=256)
 
     clf, acc_classical = train_classical_model(train_laoder, val_loader)
+
+    acc_test = evaluate_on_test(clf, test_loader)

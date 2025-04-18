@@ -30,4 +30,13 @@ def train_classical_model(train_loader, val_loader):
 
     return clf, acc
 
+def evaluate_on_test(clf, test_laoder):
+    print(f"🧐 Start of the test for the classic model")
 
+    x_test, y_test = flatten_loader(test_laoder)
+    y_pred = clf.predict(x_test)
+    acc = accuracy_score(y_test, y_pred)
+
+    print(f"🎯 Accuracy of the classical model in test: {acc:.4f}")
+
+    return acc
