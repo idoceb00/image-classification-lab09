@@ -1,2 +1,36 @@
-.idea
+# 🐍 Archivos de Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# 📦 Entornos virtuales
+env/
+venv/
+.lab09/  # si usas un nombre diferente para tu venv
+
+# 💻 PyCharm config
+.idea/
+
+# 📈 Checkpoints y resultados
+*.ckpt
+*.pt
+*.pth
+*.h5
+*.log
+*.json
+*.csv
+results/
+*.ipynb_checkpoints
+
+# 🧪 Datos
+data/
+*.zip
+
+# 💬 Archivos personales o temporales
 .DS_Store
+*.swp
+*.bak
