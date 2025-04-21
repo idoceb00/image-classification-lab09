@@ -2,10 +2,12 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from models.classical import train_classical_model
 from models.classical import evaluate_on_test
+import json
+from pathlib import Path
 
 def get_cifar10_loaders(batch_size=64, validation_split=0.2):
     transform = transforms.Compose([
-        transforms.Resize(224), # required for Transformer models
+        #transforms.Resize(32), # required for Transformer models
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), # CIFAR-10 mean
                              (0.2023, 0.1994, 0.2010))  # CIFAR-10 std
@@ -28,10 +30,24 @@ def get_cifar10_loaders(batch_size=64, validation_split=0.2):
 
     return train_loader, validation_loader, test_loader
 
+def save_metrics(model_name, val_acc, test_acc):
+    results_dir = Path("results")
+    results_dir.mkdir(exist_ok=True)
+
+    metrics = {"model": model_name,
+               "val_accuracy": val_acc,
+               "test_accuracy": test_acc
+               }
+
+    with open(results_dir / f"{model_name}_metrics.json", "w") as f:
+       json.dump(metrics, f, indent=4)
 
 if __name__ == '__main__':
     train_laoder, val_loader, test_loader = get_cifar10_loaders(batch_size=256)
 
+    #-------------CLASSICAL MODEL------------------
     clf, acc_classical = train_classical_model(train_laoder, val_loader)
 
     acc_test = evaluate_on_test(clf, test_loader)
+
+    save_metrics("classical", acc_classical, acc_test)
