@@ -1,9 +1,8 @@
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
-from models.classical import train_classical_model
-from models.classical import evaluate_classical_test
-from models.cnn import train_cnn_model
-from models.cnn import evaluate_cnn_test
+from models.classical import train_classical_model, evaluate_classical_test
+from models.cnn import train_cnn_model, evaluate_cnn_test
+from utils.io import save_metrics, sava_model_weights, load_model_weights
 
 import json
 from pathlib import Path
@@ -33,17 +32,6 @@ def get_cifar10_loaders(batch_size=32, validation_split=0.2):
 
     return train_loader, validation_loader, test_loader
 
-def save_metrics(model_name, val_acc, test_acc):
-    results_dir = Path("results")
-    results_dir.mkdir(exist_ok=True)
-
-    metrics = {"model": model_name,
-               "val_accuracy": val_acc,
-               "test_accuracy": test_acc
-               }
-
-    with open(results_dir / f"{model_name}_metrics.json", "w") as f:
-       json.dump(metrics, f, indent=4)
 
 if __name__ == '__main__':
     train_laoder, val_loader, test_loader = get_cifar10_loaders(batch_size=256)
