@@ -1,13 +1,16 @@
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from models.classical import train_classical_model
-from models.classical import evaluate_on_test
+from models.classical import evaluate_classical_test
+from models.cnn import train_cnn_model
+from models.cnn import evaluate_cnn_test
+
 import json
 from pathlib import Path
 
-def get_cifar10_loaders(batch_size=64, validation_split=0.2):
+def get_cifar10_loaders(batch_size=32, validation_split=0.2):
     transform = transforms.Compose([
-        #transforms.Resize(32), # required for Transformer models
+        transforms.Resize(128), # required for Transformer models
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), # CIFAR-10 mean
                              (0.2023, 0.1994, 0.2010))  # CIFAR-10 std
@@ -46,8 +49,16 @@ if __name__ == '__main__':
     train_laoder, val_loader, test_loader = get_cifar10_loaders(batch_size=256)
 
     #-------------CLASSICAL MODEL------------------
-    clf, acc_classical = train_classical_model(train_laoder, val_loader)
+    # clf, acc_classical = train_classical_model(train_laoder, val_loader)
+    #
+    # acc_classical_test = evaluate_on_test(clf, test_loader)
+    #
+    # save_metrics("classical", acc_classical, acc_classical_test)
 
-    acc_test = evaluate_on_test(clf, test_loader)
+    #------------CNN MODEL----------------------
 
-    save_metrics("classical", acc_classical, acc_test)
+    model_cnn, acc_cnn = train_cnn_model(train_laoder, val_loader, num_epochs=10)
+
+    acc_cnn_test = evaluate_cnn_test(model_cnn, test_loader)
+
+    save_metrics("CNN(MobileNetV2)", acc_cnn, acc_cnn_test)
