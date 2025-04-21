@@ -5,7 +5,11 @@ from torchvision import models
 from sklearn.metrics import accuracy_score
 import numpy as np
 
-def train_cnn_model(train_loader, val_loader, num_epochs=10, device="cpu"):
+from utils.device import get_device
+
+def train_cnn_model(train_loader, val_loader, num_epochs=10):
+
+    device = get_device()
     model = models.mobilenet_v2(pretrained=True)
 
     model.classifier[1] = nn.Linear(model.last_channel, 10)
