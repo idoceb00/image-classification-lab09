@@ -55,3 +55,27 @@ def train_cnn_model(train_loader, val_loader, num_epochs=10):
     print(f"🎯 Accuracy in validation with MobileNetV2: {acc:.4f}")
 
     return model, acc
+
+def evaluate_cnn_test(model, test_loader):
+    """
+    Evaluates the model trained on the test set.
+
+    """
+
+    device = get_device()
+    model = model.to(device)
+    model.eval()
+
+    all_preds, all_labels = [], []
+
+    with torch.no_grad():
+        for inputs, labels in test_loader:
+            inputs = inputs.to(device)
+            outputs = model(inputs)
+            preds = outputs.argmax(dim=1).cpu().numpy()
+            all_preds.extend(preds)
+            all_labels.extend(labels.numpy())
+
+    acc = accuracy_score(all_labels, all_preds)
+    print(f"✅ Accuracy en test con MobileNetV2: {acc:.4f}")
+    return acc

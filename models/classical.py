@@ -30,7 +30,7 @@ def train_classical_model(train_loader, val_loader):
 
     return clf, acc
 
-def evaluate_on_test(clf, test_laoder):
+def evaluate_classical_test(clf, test_laoder):
     print(f"🧐 Testing the classic model")
 
     x_test, y_test = flatten_loader(test_laoder)
