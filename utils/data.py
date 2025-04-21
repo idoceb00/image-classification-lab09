@@ -15,11 +15,11 @@ def get_cifar10_loaders(batch_size=32, validation_split=0.2, resize=None):
     if resize is not None:
         transform_list.append(transforms.Resize(resize))
 
-     transform_list.extend([
+    transform_list.extend([
          transforms.ToTensor(),
          transforms.Normalize((0.4914, 0.4822, 0.4465),  # CIFAR-10 mean
                               (0.2023, 0.1994, 0.2010))  # CIFAR-10 std
-     ])
+    ])
     transform = transforms.Compose(transform_list)
 
     full_train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
